@@ -1,5 +1,5 @@
 void check_status(String url) {
-  //Serial.print("Fetching " + url + "... ");
+//  Serial.print("Fetching " + url + "... ");
 
   HTTPClient http;
   http.begin(url);
@@ -13,26 +13,28 @@ void check_status(String url) {
     Serial.println(payload);
     //---------------get data-------------------
     //1. 대여상태
-    String rent = json_parser(payload, "대여상태");
+    String rent = json_parser(payload, "rent_state");
 //    response.remove(0, 1);
     Serial.println("rent : " + rent);
-    if(rent.equals("ture")){
+    if(rent.equals("true")){
       rent_state = "1";
     }else{
       rent_state = "0";
     }
   }
   else {
+    //if connection error init variable rent state
     Serial.print("Error code: ");
     Serial.println(httpResponseCode);
     Serial.println(":-(");
+    rent_state = "0";
   }
 
 
 }
 
 void get_http(String url) {
-  Serial.print("Fetching " + url + "... ");
+//  Serial.print("Fetching " + url + "... ");
 
   HTTPClient http;
   http.begin(url);

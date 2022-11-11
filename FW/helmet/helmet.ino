@@ -14,7 +14,7 @@
 const char* ssid = "maru";
 const char* password = "123456789";
 
-const String url = "http://cloud.park-cloud.co19.kr/maru";
+const String url = "http://macgun.hopto.org:33333/";
 unsigned long lastTime = 0;
 unsigned long timerDelay = 5000;
 
@@ -61,8 +61,9 @@ void loop() {
   pixels.clear(); // Set all pixel colors to 'off'
   //read rent status....
   if ((millis() - lastTime) > timerDelay) {//check status 5sec
-    check_status(url + "/view.php");
+    check_status(url + "helmet/view");
     lastTime = millis(); //time init!
+    Serial.println("rent_status : " + rent_state);
   }
 
   if (rent_state.equals("1")) {
@@ -73,7 +74,8 @@ void loop() {
     if (analogRead(36) > 80) {
       //helmat wear true
       //send url
-      Serial.println(String(digitalRead(4)) + "\t" + String(digitalRead(16)) + "\t" + String(digitalRead(17)));
+      get_http(url+"helmet/wear?status=true");
+//      Serial.println(String(digitalRead(4)) + "\t" + String(digitalRead(16)) + "\t" + String(digitalRead(17)));
       delay(100);
       if (digitalRead(4) == 1) {
         //D 우회전
@@ -90,6 +92,7 @@ void loop() {
       //helmat no wear!
       //warring !
       //send url
+      get_http(url+"helmet/wear?status=false");
       led_warring();
     }
 
